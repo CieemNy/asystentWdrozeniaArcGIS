@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files (Pamięć podręczna Pythona)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Katalogi kompilacji / pakowania (np. z PyInstaller / cx_Freeze / setuptools)
+build/
+dist/
+*.manifest
+*.spec
+
+# Wirtualne środowiska Pythona (Virtual Environments)
+venv/
+env/
+ENV/
+.venv/
+
+# Środowisko i konfiguracje edytora / IDE
+.vscode/
+.idea/
+
+# Logi i pliki tymczasowe
+*.log
+*.tmp
+
+# Pliki konfiguracyjne ze zmiennymi środowiskowymi (jeśli zawierają hasła/klucze)
+.env
