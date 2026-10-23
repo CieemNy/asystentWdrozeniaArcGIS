@@ -1,8 +1,9 @@
 import customtkinter as ctk
 from core.utils import CTKTooltip, build_dsc_patch_config
 from core import session
+from ui.components.form_fields import FormFieldMixin
 
-class ServerSectionFrame(ctk.CTkFrame):
+class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
     def __init__(self, master, help_img=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
         self.help_img = help_img
@@ -42,7 +43,7 @@ class ServerSectionFrame(ctk.CTkFrame):
         self.server_anchor = self._add_field("Server Python Directory", "Katalog Python ArcGIS Servera", "C:\\opt\\Python27")
 
         # Sekcja Patchy
-        self.server_patch_anchor = self._add_checkbox("Server_DoPatch", "Zainstalować patche?", default=False, command=self.toggle_patches)
+        self.server_patch_anchor = self._add_checkbox("Server_DoPatch", "Zainstalować patche?", default=False, command=lambda: self._toggle_container("Server_DoPatch", self.patches_container, self.server_patch_anchor))
         self.patches_container = ctk.CTkFrame(self, fg_color="transparent")
         self._add_field_to_frame(self.patches_container, "Server Patches Directory", "Katalog patchy ArcGIS Server", default_patch_dir)
         self._add_field_to_frame(self.patches_container, "Server Patches List", "Lista patchy ArcGIS Server", default_patch_list)
@@ -62,8 +63,8 @@ class ServerSectionFrame(ctk.CTkFrame):
             fg_color="#f8f7f4"
         ).pack(fill="x", anchor="w", padx=10)
 
-        self._add_checkbox_to_frame(adds_sub, "Server_EnableArcMap", "Odblokować ArcMap Runtime?", default=True, help_text="Dostępne jedynie dla wersji 10.9.1. Jeśli instalujesz inną wersję, odznacz tą opcję.")
-        self.server_dotnet_anchor = self._add_checkbox_to_frame(adds_sub, "Server_EnableDotnet", "Odblokować Dotnet Support?", default=True, command=self.toggle_dotnet)
+        self._add_checkbox("Server_EnableArcMap", "Odblokować ArcMap Runtime?", default=True, help_text="Dostępne jedynie dla wersji 10.9.1. Jeśli instalujesz inną wersję, odznacz tą opcję.", parent_frame=adds_sub)
+        self.server_dotnet_anchor = self._add_checkbox("Server_EnableDotnet", "Odblokować Dotnet Support?", default=True, command=lambda: self._toggle_container("Server_EnableDotnet", self.dotnet_container, self.server_dotnet_anchor), parent_frame=adds_sub)
 
         self.dotnet_container = ctk.CTkFrame(adds_sub, fg_color="transparent")
         self._add_field_to_frame(self.dotnet_container, "Path to Server Dotnet", "Ścieżka do Dotneta", windotnet_runtime)
@@ -80,67 +81,10 @@ class ServerSectionFrame(ctk.CTkFrame):
         self._add_field_to_frame(admin_sub, "Server Admin User", "Nazwa użytkownika", "siteadmin")
         self._add_field_to_frame(admin_sub, "Server Admin Password", "Hasło użytkownika", "", is_pass=True)
 
-    def _add_field(self, var_key, label_text, default, is_pass=False):
-        return self._add_field_to_frame(self, var_key, label_text, default, is_pass)
-
-    def _add_field_to_frame(self, parent_frame, var_key, label_text, default, is_pass=False):
-        row = ctk.CTkFrame(parent_frame, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black").pack(side="left")
-        v = ctk.StringVar(value=default)
-        self.vars[var_key] = v
-        ctk.CTkEntry(row, textvariable=v, fg_color="white", text_color="black", show="*" if is_pass else "").pack(side="left", fill="x", expand=True)
-        return row
-
-    def _add_checkbox(self, var_key, label_text, default=True, command=None, help_text=None):
-        return self._add_checkbox_to_frame(self, var_key, label_text, default, command, help_text)
-
-    def _add_checkbox_to_frame(self, parent_frame, var_key, label_text, default=True, command=None, help_text=None):
-        row = ctk.CTkFrame(parent_frame, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        
-        lbl = ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black")
-        lbl.pack(side="left")
-        
-        v = ctk.BooleanVar(value=default)
-        self.vars[var_key] = v 
-        
-        cb = ctk.CTkCheckBox(row, text="", variable=v, width=20, command=command)
-        cb.pack(side="left")
-        
-        if help_text and self.help_img:
-            help_icon = ctk.CTkLabel(row, text="", image=self.help_img, cursor="question_arrow")
-            help_icon.pack(side="left", padx=10)
-            CTKTooltip(help_icon, help_text)
-        
-        return row
-
-    def _add_hr(self):
-        line = ctk.CTkFrame(self, height=2, fg_color="#e2e8f0", border_width=0)
-        line.pack(fill="x", padx=20, pady=15)
-
-    def toggle_patches(self):
-        if self.vars["Server_DoPatch"].get():
-            self.patches_container.pack(fill="x", after=self.server_patch_anchor)
-        else:
-            self.patches_container.pack_forget()
-
-    def toggle_ha(self, is_ha_enabled):
-        if is_ha_enabled:
-            self.ha_container.pack(fill="x", after=self.server_anchor)
-        else:
-            self.ha_container.pack_forget()
-
-    def toggle_dotnet(self):
-        if self.vars["Server_EnableDotnet"].get():
-            self.dotnet_container.pack(fill="x", after=self.server_dotnet_anchor)
-        else:
-            self.dotnet_container.pack_forget()
-
     def refresh_layout(self, is_ha_enabled):
-        self.toggle_patches()
-        self.toggle_ha(is_ha_enabled)
-        self.toggle_dotnet()
+        self._toggle_container("Server_DoPatch", self.patches_container, self.server_patch_anchor)
+        self._toggle_container_var(is_ha_enabled, self.ha_container, self.server_anchor)
+        self._toggle_container("Server_EnableDotnet", self.dotnet_container, self.server_dotnet_anchor)
 
     def get_data(self, is_ha_global, download_setups=False):
         v = {k: var.get() for k, var in self.vars.items()}
