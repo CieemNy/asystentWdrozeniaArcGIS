@@ -22,6 +22,7 @@ class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
             text="Konfigurator ArcGIS Server", 
             font=("Segoe UI", 15, "bold"), 
             fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w")
 
         server_installer = session.get("server_installer", "C:\\Installation\\Software\\ArcGISServer\\Setup.exe")
@@ -60,7 +61,8 @@ class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
             adds_sub, 
             text="Dodatkowe komponenty dla ArcGIS Servera", 
             font=("Segoe UI", 12, "bold"),
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w", padx=10)
 
         self._add_checkbox("Server_EnableArcMap", "Odblokować ArcMap Runtime?", default=True, help_text="Dostępne jedynie dla wersji 10.9.1. Jeśli instalujesz inną wersję, odznacz tą opcję.", parent_frame=adds_sub)
@@ -75,7 +77,8 @@ class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
             admin_sub, 
             text="Konto administracyjne ArcGIS Servera", 
             font=("Segoe UI", 12, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w", padx=10)
 
         self._add_field_to_frame(admin_sub, "Server Admin User", "Nazwa użytkownika", "siteadmin")

@@ -21,7 +21,8 @@ class WebAdaptorSectionFrame(FormFieldMixin, ctk.CTkFrame):
             label_frame, 
             text="Konfigurator ArcGIS Web Adaptor", 
             font=("Segoe UI", 15, "bold"),
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w")
 
         webadaptor_installer = session.get("webadaptor_installer", "C:\\Installation\\Software\\ArcGISServer\\Setup.exe")
@@ -39,7 +40,8 @@ class WebAdaptorSectionFrame(FormFieldMixin, ctk.CTkFrame):
             wa_sub, 
             text="Opcje dla ArcGIS Webadaptor", 
             font=("Segoe UI", 12, "bold"),
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(anchor="w", fill="x", padx=10)
 
         self._add_checkbox("WA_AdminAccess", "Odblokować dostęp administracyjny?", default=True, parent_frame=wa_sub)

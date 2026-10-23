@@ -22,7 +22,8 @@ class DataStoreSectionFrame(FormFieldMixin, ctk.CTkFrame):
             label_frame, 
             text="Konfigurator ArcGIS Datastore", 
             font=("Segoe UI", 15, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w")
 
         datastore_installer = session.get("datastore_installer", "C:\\Installation\\Software\\ArcGISDataStore\\Setup.exe")

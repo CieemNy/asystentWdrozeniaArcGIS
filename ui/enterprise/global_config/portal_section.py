@@ -21,7 +21,8 @@ class PortalSectionFrame(FormFieldMixin, ctk.CTkFrame):
             label_frame, 
             text="Konfigurator Portal For ArcGIS", 
             font=("Segoe UI", 15, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w")
 
         portal_installer = session.get("portal_installer", "C:\\Installation\\Software\\PortalForArcGIS\\Setup.exe")
@@ -59,7 +60,8 @@ class PortalSectionFrame(FormFieldMixin, ctk.CTkFrame):
             admin_sub, 
             text="Konto administracyjne Portalu", 
             font=("Segoe UI", 12, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(anchor="w", fill="x", padx=10)
 
         self._add_field_to_frame(admin_sub, "Portal Username", "Imię i Nazwisko", "Imie Nazwisko")

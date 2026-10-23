@@ -17,7 +17,14 @@ class BaseSectionFrame(FormFieldMixin, ctk.CTkFrame):
         label_frame = ctk.CTkFrame(self, fg_color="#f8f9fa", border_color="#dee2e6", border_width=1, corner_radius=6)
         label_frame.pack(fill="x", padx=10, pady=(0, 10))
 
-        ctk.CTkLabel(label_frame, text="Podstawowa konfiguracja", font=("Segoe UI", 15, "bold"), text_color="#000000", fg_color="#f8f7f4", corner_radius=8).pack(fill="x", anchor="w")
+        ctk.CTkLabel(
+            label_frame,
+            text="Podstawowa konfiguracja", 
+            font=("Segoe UI", 15, "bold"), 
+            text_color="#000000", 
+            fg_color="#f8f7f4", 
+            corner_radius=8
+        ).pack(fill="x", anchor="w")
 
         self.config_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.config_frame.pack(fill="x")
@@ -34,7 +41,13 @@ class BaseSectionFrame(FormFieldMixin, ctk.CTkFrame):
         self.credentials_section = ctk.CTkFrame(self, fg_color="transparent")
         self.credentials_section.pack(fill="x")
 
-        ctk.CTkLabel(self.credentials_section, text="Poświadczenia", font=("Segoe UI", 15, "bold"), fg_color="#f8f7f4").pack(fill="x", anchor="w", padx=10, pady=(20, 5))
+        ctk.CTkLabel(
+            self.credentials_section, 
+            text="Poświadczenia", 
+            font=("Segoe UI", 15, "bold"), 
+            fg_color="#f8f7f4",
+            text_color="#000000"
+            ).pack(fill="x", anchor="w", padx=10, pady=(20, 5))
 
         self.credentials_frame = ctk.CTkFrame(self.credentials_section, fg_color="transparent")
         self.credentials_frame.pack(fill="x")
