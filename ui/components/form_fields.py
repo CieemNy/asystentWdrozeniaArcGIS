@@ -47,7 +47,7 @@ class FormFieldMixin:
         else:
             container.pack_forget()
 
-    def _add_dropdown(self, var_key, label_text, options, default, parent_frame=None, pack=True):
+    def _add_dropdown(self, var_key, label_text, options, default, parent_frame=None, pack=True, command=None):
         parent = parent_frame if parent_frame is not None else self
         row = ctk.CTkFrame(parent, fg_color="transparent")
 
