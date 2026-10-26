@@ -35,7 +35,7 @@ class ProConfigPanel(FormFieldMixin, ctk.CTkFrame):
 
         self._add_field("Path_Installer", "Ścieżka do instalki ArcGIS Pro", pro_installer)
         self._add_checkbox("Pro_IsSelfExtracting", "Do rozpakowania?", default=True)
-        self._add_field("Install_Dir", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Pro")
+        self._add_field("Install_Dir", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Pro", editable=False)
         self._add_field("Path_Dotnet", "Ścieżka do DotNet Desktop Runtime", windotnet_runtime)
         self._add_field("Path_WebView2", "Ścieżka do Edge WebView2 Runtime", webview2)
         

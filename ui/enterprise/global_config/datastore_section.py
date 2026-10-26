@@ -35,8 +35,8 @@ class DataStoreSectionFrame(FormFieldMixin, ctk.CTkFrame):
 
         self._add_field("Path to Datestore Installer", "Ścieżka do instalki ArcGIS Datastore", datastore_installer)
         self._add_checkbox("DS_IsSelfExtracting", "Do rozpakowania?", default=False)
-        self.ds_anchor = self._add_field("Datestore Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\DataStore")
-        self._add_field("Datestore Content Directory", "Katalog zawartości ArcGIS Datastore", "C:\\arcgisdatastore")
+        self.ds_anchor = self._add_field("Datestore Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\DataStore", editable=False)
+        self._add_field("Datestore Content Directory", "Katalog zawartości ArcGIS Datastore", "C:\\arcgisdatastore", editable=False)
         self.datastore_patch_anchor = self._add_checkbox("DS_DoPatch", "Zainstalować patche?", default=False, command=lambda: self._toggle_container("DS_DoPatch", self.patches_container, self.datastore_patch_anchor))
         self.patches_container = ctk.CTkFrame(self, fg_color="transparent")
         self._add_field_to_frame(self.patches_container, "Datestore Patches Directory", "Katalog patchy ArcGIS Datastore", default_patch_dir)

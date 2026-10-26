@@ -38,10 +38,10 @@ class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
         self._add_field("Path to Server Volume", "Ścieżka do woluminu ArcGIS Server", server_volume)
         self._add_checkbox("Server_IsSelfExtracting", "Do wypakowania?", default=False)
         self._add_field("Path to Server License", "Ścieżka do licencji ArcGIS Server", server_license)
-        self._add_field("Server Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Server")
-        self._add_field("Server Root Directory", "Główny katalog ArcGIS Servera", "C:\\arcgisserver\\directories")
-        self._add_field("Server Config Store", "Katalog konfiguracji ArcGIS Server", "C:\\arcgisserver\\config-store")
-        self.server_anchor = self._add_field("Server Python Directory", "Katalog Python ArcGIS Servera", "C:\\opt\\Python27")
+        self._add_field("Server Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Server", editable=False)
+        self._add_field("Server Root Directory", "Główny katalog ArcGIS Servera", "C:\\arcgisserver\\directories", editable=False)
+        self._add_field("Server Config Store", "Katalog konfiguracji ArcGIS Server", "C:\\arcgisserver\\config-store", editable=False)
+        self.server_anchor = self._add_field("Server Python Directory", "Katalog Python ArcGIS Servera", "C:\\opt\\Python27", editable=False)
 
         # Sekcja Patchy
         self.server_patch_anchor = self._add_checkbox("Server_DoPatch", "Zainstalować patche?", default=False, command=lambda: self._toggle_container("Server_DoPatch", self.patches_container, self.server_patch_anchor))
@@ -81,7 +81,7 @@ class ServerSectionFrame(FormFieldMixin, ctk.CTkFrame):
             text_color="#000000"
         ).pack(fill="x", anchor="w", padx=10)
 
-        self._add_field_to_frame(admin_sub, "Server Admin User", "Nazwa użytkownika", "siteadmin")
+        self._add_field_to_frame(admin_sub, "Server Admin User", "Nazwa użytkownika", "siteadmin", editable=False)
         self._add_field_to_frame(admin_sub, "Server Admin Password", "Hasło użytkownika", "", is_pass=True)
 
     def refresh_layout(self, is_ha_enabled):

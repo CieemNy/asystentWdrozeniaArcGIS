@@ -21,8 +21,8 @@ class FederationSectionFrame(FormFieldMixin, ctk.CTkFrame):
 
         self.fed_fields_frame = ctk.CTkFrame(self, fg_color="transparent")
         self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Hostname", "Hostname Portalu", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Port", "Port Portalu", "443")
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Context", "Kontekst Portalu", "portal")
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Port", "Port Portalu", "443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Context", "Kontekst Portalu", "portal", editable=False)
 
         ctk.CTkLabel(
             self.fed_fields_frame, 
@@ -32,7 +32,7 @@ class FederationSectionFrame(FormFieldMixin, ctk.CTkFrame):
             fg_color="#f8f7f4"
         ).pack(anchor="w", padx=20, fill="x", pady=(10, 0))
 
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin UserName", "Nazwa użytkownika", "PortalCreator")
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin UserName", "Nazwa użytkownika", "PortalCreator", editable=False)
         self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin Password", "Hasło użytkownika", "", is_pass=True)
 
         ctk.CTkLabel(
@@ -44,11 +44,11 @@ class FederationSectionFrame(FormFieldMixin, ctk.CTkFrame):
         ).pack(anchor="w", padx=20, fill="x", pady=(15, 0))
         
         self._add_field_to_frame(self.fed_fields_frame, "Server Federation Hostname", "Hostname Servera", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Port", "Port Servera", "443")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Context", "Kontekst Serwera", "arcgis")
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Port", "Port Servera", "443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Context", "Kontekst Serwera", "arcgis", editable=False)
         self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Hostname", "Hostname Administracyjny", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin URL Port", "Port administracyjny Servera", "6443")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Context", "Kontekst administracyjny Servera", "arcgis")
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin URL Port", "Port administracyjny Servera", "6443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Context", "Kontekst administracyjny Servera", "arcgis", editable=False)
 
     def toggle_federation(self):
         if self.vars["DoFederate"].get():

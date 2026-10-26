@@ -38,9 +38,9 @@ class PortalSectionFrame(FormFieldMixin, ctk.CTkFrame):
         self._add_field("Path to Portal Volume", "Ścieżka do woluminu ArcGIS Portal", portal_volume)
         self._add_checkbox("Portal_IsSelfExtracting", "Do wypakowania?", default=False)
         self._add_field("Path to Portal License", "Ścieżka do licencji", portal_license)
-        self._add_field("Portal Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Portal")
-        self._add_field("Portal Content Directory", "Katalog zawartości ArcGIS Portalu", "C:\\arcgisportal")
-        self.portal_anchor = self._add_field("Portal Content Location", "Lokalizacja zasobów ArcGIS Portalu", "C:\\arcgisportal\\content")
+        self._add_field("Portal Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Portal", editable=False)
+        self._add_field("Portal Content Directory", "Katalog zawartości ArcGIS Portalu", "C:\\arcgisportal", editable=False)
+        self.portal_anchor = self._add_field("Portal Content Location", "Lokalizacja zasobów ArcGIS Portalu", "C:\\arcgisportal\\content", editable=False)
 
         # Sekcja Patchy
         self.patch_anchor = self._add_checkbox("Portal_DoPatch", "Zainstalować patche?", default=False, command=lambda: self._toggle_container("Portal_DoPatch", self.patches_container, self.patch_anchor))
@@ -65,7 +65,7 @@ class PortalSectionFrame(FormFieldMixin, ctk.CTkFrame):
         ).pack(anchor="w", fill="x", padx=10)
 
         self._add_field_to_frame(admin_sub, "Portal Username", "Imię i Nazwisko", "Imie Nazwisko")
-        self._add_field_to_frame(admin_sub, "Portal Admin User", "Nazwa użytkownika", "PortalCreator")
+        self._add_field_to_frame(admin_sub, "Portal Admin User", "Nazwa użytkownika", "PortalCreator", editable=False)
         self._add_field_to_frame(admin_sub, "Portal Admin Password", "Hasło użytkownika", "", is_pass=True)
         self._add_field_to_frame(admin_sub, "Portal Admin Email", "Email", "admin@domain.local")
 

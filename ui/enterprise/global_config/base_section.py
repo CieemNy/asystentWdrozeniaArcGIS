@@ -33,8 +33,8 @@ class BaseSectionFrame(FormFieldMixin, ctk.CTkFrame):
         self._add_checkbox("IsHA", "Odblokować architekturę HA?", default=False, command=self._handle_ha_toggle, parent_frame=self.config_frame)
 
         # Pola warunkowe — tworzone, ale początkowo ukryte
-        self.portal_ctx_row = self._add_field("PortalContext", "Kontekst portalu", "portal", parent_frame=self.config_frame, pack=False)
-        self.server_ctx_row = self._add_field("ServerContext", "Kontekst serwera", "arcgis", parent_frame=self.config_frame, pack=False)
+        self.portal_ctx_row = self._add_field("PortalContext", "Kontekst portalu", "portal", parent_frame=self.config_frame, pack=False, editable=False)
+        self.server_ctx_row = self._add_field("ServerContext", "Kontekst serwera", "arcgis", parent_frame=self.config_frame, pack=False, editable=False)
         self.server_role_row = self._add_dropdown("ServerRole", "Rola serwera", SERVER_ROLE_OPTIONS, "GeneralPurposeServer", parent_frame=self.config_frame, pack=False)
 
         # Poświadczenia
