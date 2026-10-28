@@ -1,8 +1,9 @@
 import customtkinter as ctk
 from core import session
 from core.utils import build_dsc_patch_config
+from ui.components.form_fields import FormFieldMixin
 
-class PortalSectionFrame(ctk.CTkFrame):
+class PortalSectionFrame(FormFieldMixin, ctk.CTkFrame):
     def __init__(self, master, help_img=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
         self.help_img = help_img
@@ -20,7 +21,8 @@ class PortalSectionFrame(ctk.CTkFrame):
             label_frame, 
             text="Konfigurator Portal For ArcGIS", 
             font=("Segoe UI", 15, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(fill="x", anchor="w")
 
         portal_installer = session.get("portal_installer", "C:\\Installation\\Software\\PortalForArcGIS\\Setup.exe")
@@ -36,12 +38,12 @@ class PortalSectionFrame(ctk.CTkFrame):
         self._add_field("Path to Portal Volume", "Ścieżka do woluminu ArcGIS Portal", portal_volume)
         self._add_checkbox("Portal_IsSelfExtracting", "Do wypakowania?", default=False)
         self._add_field("Path to Portal License", "Ścieżka do licencji", portal_license)
-        self._add_field("Portal Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Portal")
-        self._add_field("Portal Content Directory", "Katalog zawartości ArcGIS Portalu", "C:\\arcgisportal")
-        self.portal_anchor = self._add_field("Portal Content Location", "Lokalizacja zasobów ArcGIS Portalu", "C:\\arcgisportal\\content")
+        self._add_field("Portal Install Directory", "Katalog instalacji", "C:\\Program Files\\ArcGIS\\Portal", editable=False)
+        self._add_field("Portal Content Directory", "Katalog zawartości ArcGIS Portalu", "C:\\arcgisportal", editable=False)
+        self.portal_anchor = self._add_field("Portal Content Location", "Lokalizacja zasobów ArcGIS Portalu", "C:\\arcgisportal\\content", editable=False)
 
         # Sekcja Patchy
-        self.patch_anchor = self._add_checkbox("Portal_DoPatch", "Zainstalować patche?", default=False, command=self.toggle_patches)
+        self.patch_anchor = self._add_checkbox("Portal_DoPatch", "Zainstalować patche?", default=False, command=lambda: self._toggle_container("Portal_DoPatch", self.patches_container, self.patch_anchor))
         self.patches_container = ctk.CTkFrame(self, fg_color="transparent")
         self._add_field_to_frame(self.patches_container, "Portal Patches Directory", "Katalog patchy ArcGIS Portal", default_patch_dir)
         self._add_field_to_frame(self.patches_container, "Portal Patches List", "Lista patchy ArcGIS Portal", default_patch_list)
@@ -58,51 +60,18 @@ class PortalSectionFrame(ctk.CTkFrame):
             admin_sub, 
             text="Konto administracyjne Portalu", 
             font=("Segoe UI", 12, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(anchor="w", fill="x", padx=10)
 
         self._add_field_to_frame(admin_sub, "Portal Username", "Imię i Nazwisko", "Imie Nazwisko")
-        self._add_field_to_frame(admin_sub, "Portal Admin User", "Nazwa użytkownika", "PortalCreator")
+        self._add_field_to_frame(admin_sub, "Portal Admin User", "Nazwa użytkownika", "PortalCreator", editable=False)
         self._add_field_to_frame(admin_sub, "Portal Admin Password", "Hasło użytkownika", "", is_pass=True)
         self._add_field_to_frame(admin_sub, "Portal Admin Email", "Email", "admin@domain.local")
 
-    def _add_field(self, var_key, label_text, default, is_pass=False):
-        return self._add_field_to_frame(self, var_key, label_text, default, is_pass)
-
-    def _add_field_to_frame(self, parent_frame, var_key, label_text, default, is_pass=False):
-        row = ctk.CTkFrame(parent_frame, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black").pack(side="left")
-        v = ctk.StringVar(value=default)
-        self.vars[var_key] = v
-        ctk.CTkEntry(row, textvariable=v, fg_color="white", text_color="black", show="*" if is_pass else "").pack(side="left", fill="x", expand=True)
-        return row
-
-    def _add_checkbox(self, var_key, label_text, default=True, command=None):
-        row = ctk.CTkFrame(self, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black").pack(side="left")
-        v = ctk.BooleanVar(value=default)
-        self.vars[var_key] = v
-        cb = ctk.CTkCheckBox(row, text="", variable=v, width=20, command=command)
-        cb.pack(side="left")
-        return row
-
-    def toggle_patches(self):
-        if self.vars["Portal_DoPatch"].get():
-            self.patches_container.pack(fill="x", after=self.patch_anchor)
-        else:
-            self.patches_container.pack_forget()
-
-    def toggle_ha(self, is_ha_enabled):
-        if is_ha_enabled:
-            self.ha_container.pack(fill="x", after=self.portal_anchor)
-        else:
-            self.ha_container.pack_forget()
-
     def refresh_layout(self, is_ha_enabled):
-        self.toggle_patches()
-        self.toggle_ha(is_ha_enabled)
+        self._toggle_container("Portal_DoPatch", self.patches_container, self.patch_anchor)
+        self._toggle_container_var(is_ha_enabled, self.ha_container, self.portal_anchor)
 
     def get_data(self, is_ha_global, download_setups=False):
         v = {k: var.get() for k, var in self.vars.items()}

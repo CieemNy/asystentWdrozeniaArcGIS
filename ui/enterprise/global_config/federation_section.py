@@ -1,7 +1,7 @@
-# global_config/federation_section.py
 import customtkinter as ctk
+from ui.components.form_fields import FormFieldMixin
 
-class FederationSectionFrame(ctk.CTkFrame):
+class FederationSectionFrame(FormFieldMixin, ctk.CTkFrame):
     def __init__(self, master, help_img=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
         self.help_img = help_img
@@ -13,62 +13,42 @@ class FederationSectionFrame(ctk.CTkFrame):
             self, 
             text="Konfigurator Federacji", 
             font=("Segoe UI", 15, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(anchor="w", padx=10, fill="x", pady=(0, 10))
-        self.fed_anchor = self._add_checkbox("DoFederate", "Sfederować Portal & Server?", default=False, command=self.toggle_federation)
+
+        self.fed_anchor = self._add_checkbox("DoFederate", "Sfederować Portal & Server?", default=False, command=lambda: self._toggle_container("DoFederate", self.fed_fields_frame, self.fed_anchor))
 
         self.fed_fields_frame = ctk.CTkFrame(self, fg_color="transparent")
         self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Hostname", "Hostname Portalu", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Port", "Port Portalu", "443")
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Context", "Kontekst Portalu", "portal")
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Port", "Port Portalu", "443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Context", "Kontekst Portalu", "portal", editable=False)
 
         ctk.CTkLabel(
             self.fed_fields_frame, 
             text="Konto administracyjne Portalu", 
-            font=("Segoe UI", 12, "bold"), 
+            font=("Segoe UI", 12, "bold"),
+            text_color="#000000",
             fg_color="#f8f7f4"
         ).pack(anchor="w", padx=20, fill="x", pady=(10, 0))
-        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin UserName", "Nazwa użytkownika", "PortalCreator")
+
+        self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin UserName", "Nazwa użytkownika", "PortalCreator", editable=False)
         self._add_field_to_frame(self.fed_fields_frame, "Portal Federation Admin Password", "Hasło użytkownika", "", is_pass=True)
 
         ctk.CTkLabel(
             self.fed_fields_frame, 
             text="Opcjonalne parametry ArcGIS Servera",
             font=("Segoe UI", 12, "bold"), 
-            fg_color="#f8f7f4"
+            fg_color="#f8f7f4",
+            text_color="#000000"
         ).pack(anchor="w", padx=20, fill="x", pady=(15, 0))
+        
         self._add_field_to_frame(self.fed_fields_frame, "Server Federation Hostname", "Hostname Servera", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Port", "Port Servera", "443")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Context", "Kontekst Serwera", "arcgis")
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Port", "Port Servera", "443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Context", "Kontekst Serwera", "arcgis", editable=False)
         self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Hostname", "Hostname Administracyjny", "")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin URL Port", "Port administracyjny Servera", "6443")
-        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Context", "Kontekst administracyjny Servera", "arcgis")
-
-    def _add_field_to_frame(self, parent_frame, var_key, label_text, default, is_pass=False):
-        row = ctk.CTkFrame(parent_frame, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black").pack(side="left")
-        v = ctk.StringVar(value=default)
-        self.vars[var_key] = v
-        ctk.CTkEntry(row, textvariable=v, fg_color="white", text_color="black", show="*" if is_pass else "").pack(side="left", fill="x", expand=True)
-        return row
-
-    def _add_checkbox(self, var_key, label_text, default=True, command=None):
-        row = ctk.CTkFrame(self, fg_color="transparent")
-        row.pack(fill="x", padx=20, pady=2)
-        ctk.CTkLabel(row, text=label_text, width=230, anchor="w", text_color="black").pack(side="left")
-        v = ctk.BooleanVar(value=default)
-        self.vars[var_key] = v
-        cb = ctk.CTkCheckBox(row, text="", variable=v, width=20, command=command)
-        cb.pack(side="left")
-        return row
-
-    def _add_hr(self):
-        self._add_hr_to_frame(self)
-
-    def _add_hr_to_frame(self, parent_frame):
-        line = ctk.CTkFrame(parent_frame, height=2, fg_color="#e2e8f0", border_width=0)
-        line.pack(fill="x", padx=20, pady=15)
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin URL Port", "Port administracyjny Servera", "6443", editable=False)
+        self._add_field_to_frame(self.fed_fields_frame, "Server Federation Admin Context", "Kontekst administracyjny Servera", "arcgis", editable=False)
 
     def toggle_federation(self):
         if self.vars["DoFederate"].get():
